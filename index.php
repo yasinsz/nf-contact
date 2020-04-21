@@ -7,6 +7,7 @@ $nameError = '';
 $emailError = '';
 $messageError = '';
 $success = false;
+$participated = $_COOKIE['participated'] ?? false;
 
 if ($_POST) {
     // Validate input
@@ -34,10 +35,11 @@ if ($_POST) {
     // If input is valid set $success to true
     if (!$nameError && !$emailError && !$messageError) {
         $success = true;
-        $input = [$name, $email, $message];
-        $participants = fopen('participants.csv', 'a');
-        fputcsv($participants, $input);
-        fclose($participants);
+        setcookie('participated', 'true');
+
+        $fp = fopen('participants.csv', 'a');
+        fputcsv($fp, [$name, $email, $message]);
+        fclose($fp);
     }
 }
 
